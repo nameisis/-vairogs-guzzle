@@ -1,0 +1,122 @@
+parameters:
+    vairogs.utils.guzzle.data_collector.history_bag.class: Vairogs\Utils\Guzzle\GuzzleHttp\History
+    vairogs.utils.guzzle.data_collector.guzzle.class: Vairogs\Utils\Guzzle\DataCollector\GuzzleCollector
+    vairogs.utils.guzzle.data_collector.guzzle.template: 'Guzzle/Collector/guzzle.html.twig'
+    vairogs.utils.guzzle.middleware.stopwatch.class: Vairogs\Utils\Guzzle\GuzzleHttp\Middleware\StopwatchMiddleware
+    vairogs.utils.guzzle.middleware.history.class: Vairogs\Utils\Guzzle\GuzzleHttp\Middleware\HistoryMiddleware
+    vairogs.utils.guzzle.middleware.logger.factory: GuzzleHttp\Middleware
+    vairogs.utils.guzzle.logger.message_formatter.class: Vairogs\Utils\Guzzle\GuzzleHttp\MessageFormatter
+    vairogs.utils.guzzle.middleware.cache.class: Vairogs\Utils\Guzzle\GuzzleHttp\Middleware\CacheMiddleware
+    vairogs.utils.guzzle.cache_adapter.redis.class: Vairogs\Utils\Guzzle\Cache\DoctrineAdapter
+    vairogs.utils.guzzle.redis_cache.class: Doctrine\Common\Cache\PredisCache
+    vairogs.utils.guzzle.mock.storage.class: Vairogs\Utils\Guzzle\Cache\MockStorageAdapter
+    vairogs.utils.guzzle.middleware.mock.class: Vairogs\Utils\Guzzle\GuzzleHttp\Middleware\MockMiddleware
+    vairogs.utils.guzzle.client.vairogs.utils.class: GuzzleHttp\Client
+
+services:
+    vairogs.utils.guzzle.data_collector.history_bag:
+        class: '%vairogs.utils.guzzle.data_collector.history_bag.class%'
+        public: true
+
+    vairogs.utils.guzzle.data_collector.guzzle:
+        class: '%vairogs.utils.guzzle.data_collector.guzzle.class%'
+        arguments:
+            - ~
+            - "@vairogs.utils.guzzle.data_collector.history_bag"
+        tags:
+            -
+                name: data_collector
+                template: '%vairogs.utils.guzzle.data_collector.guzzle.template%'
+                id: guzzle
+
+    vairogs.utils.guzzle.middleware.stopwatch:
+        class: '%vairogs.utils.guzzle.middleware.stopwatch.class%'
+        arguments:
+            - "@debug.stopwatch"
+        tags:
+            -
+                name: vairogs.utils.guzzle.middleware
+                alias: stopwatch
+
+    vairogs.utils.guzzle.middleware.history:
+        class: '%vairogs.utils.guzzle.middleware.history.class%'
+        arguments:
+            - "@vairogs.utils.guzzle.data_collector.history_bag"
+        tags:
+            -
+                name: vairogs.utils.guzzle.middleware
+                alias: history
+                priority: -1000
+
+    vairogs.utils.guzzle.middleware.logger:
+        class: Closure
+        arguments:
+            - "@logger"
+            - "@vairogs.utils.guzzle.logger.message_formatter"
+            - ~
+        factory:
+            - '%vairogs.utils.guzzle.middleware.logger.factory%'
+            - log
+        tags:
+            -
+                name: vairogs.utils.guzzle.middleware
+                alias: logger
+
+    vairogs.utils.guzzle.logger.message_formatter:
+        class: '%vairogs.utils.guzzle.logger.message_formatter.class%'
+        public: false
+        arguments:
+            - ~
+
+    vairogs.utils.guzzle.middleware.cache:
+        class: '%vairogs.utils.guzzle.middleware.cache.class%'
+        arguments:
+            - "@vairogs.utils.guzzle.cache_adapter.redis"
+        tags:
+            -
+                name: vairogs.utils.guzzle.middleware
+                alias: cache
+                priority: -1500
+
+    vairogs.utils.guzzle.cache_adapter.redis:
+        class: '%vairogs.utils.guzzle.cache_adapter.redis.class%'
+        arguments:
+            - "@vairogs.utils.guzzle.redis_cache"
+
+    vairogs.utils.guzzle.redis_cache:
+        class: '%vairogs.utils.guzzle.redis_cache.class%'
+        arguments:
+            - ~
+
+    vairogs.utils.guzzle.mock.storage:
+        class: '%vairogs.utils.guzzle.mock.storage.class%'
+        public: false
+        arguments:
+            - ~
+
+    vairogs.utils.guzzle.middleware.mock:
+        class: '%vairogs.utils.guzzle.middleware.mock.class%'
+        arguments:
+            - "@vairogs.utils.guzzle.mock.storage"
+            - ~
+            - ~
+        tags:
+            -
+                name: vairogs.utils.guzzle.middleware
+                alias: mock
+                priority: -1250
+
+    vairogs.utils.guzzle.client.vairogs.utils:
+        class: '%vairogs.utils.guzzle.client.vairogs.utils.class%'
+        public: true
+        arguments:
+            -
+                verify: false
+                exceptions: false
+        tags:
+            -
+                name: vairogs.utils.guzzle.client
+
+    vairogs.utils.guzzle.client:
+        alias: vairogs.utils.guzzle.client.vairogs.utils
+        public: true

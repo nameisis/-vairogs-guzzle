@@ -1,0 +1,96 @@
+{% macro render_headers(headers, uri) %}
+    <h4>Headers</h4>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col" class="key">Header</th>
+            <th scope="col">Value</th>
+        </tr>
+        </thead>
+        {% for header, values in headers %}
+            <tr>
+                <td>{{ header }}</td>
+                <td>
+                    {% if values|length > 1 %}
+                        <ul>
+                            {% for value in values %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        {% if header == 'X-Debug-Token-Link' %}
+                            <a href="{{ values.0 }}" target="_blank">{{ values.0 }}</a>
+                        {% else %}
+                            {{ values.0 }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro render_body(body) %}
+    {% if body is not empty %}
+        <h4>Content</h4>
+
+        {% set lang = detect_lang(body) %}
+
+        <pre><code class="language-{{ lang }}">{{ body|vairogs_pretty_print(lang) }}</code></pre>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_infos(info) %}
+    {% if info and info.total_time %}
+        <h4>Time</h4>
+
+        {% set wait_time = info.namelookup_time + info.connect_time + info.redirect_time %}
+        {% set process_time = info.total_time - wait_time %}
+
+        <table>
+            <thead>
+            <tr>
+                <th>Measure</th>
+                <th>Duration</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>Total</td>
+                <td>{{ info.total_time|vairogs_format_duration }}</td>
+            </tr>
+            <tr>
+                <td>Name lookup</td>
+                <td>{{ info.namelookup_time|vairogs_format_duration }}</td>
+            </tr>
+            <tr>
+                <td>Connection</td>
+                <td>{{ info.connect_time|vairogs_format_duration }}</td>
+            </tr>
+            {% if info.redirect_time %}
+                <tr>
+                    <td>Redirect</td>
+                    <td>{{ info.redirect_time|vairogs_format_duration }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td>Process</td>
+                <td>{{ process_time|vairogs_format_duration }}</td>
+            </tr>
+        </table>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_error(error) %}
+    <h4>Message</h4>
+    <p>
+    <pre>{{ error.message }}</pre>
+    </p>
+
+    <h4>Origin</h4>
+    <p>
+    <pre>{{ error.file }}({{ error.line }})</pre>
+    </p>
+
+    <h4>Stack trace</h4>
+    <pre><code class="language-text">{{ error.trace|vairogs_nl2br }}</code></pre>
+{% endmacro %}

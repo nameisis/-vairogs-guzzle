@@ -1,0 +1,56 @@
+{
+    "name": "vairogs/vairogs-guzzle",
+    "description": "Real Latvian CMS Utils: Guzzle library",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "vairogs",
+        "guzzle",
+        "symfony"
+    ],
+    "authors": [
+        {
+            "name": "k0d3r1s",
+            "homepage": "https://github.com/k0d3r1s",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "vairogs/vairogs-core": "dev-master",
+        "symfony/dependency-injection": "*",
+        "symfony/http-kernel": "*",
+        "symfony/config": "*",
+        "symfony/http-foundation": "*",
+        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/psr7": "^1",
+        "psr/cache": "^1",
+        "psr/http-message": "^1",
+        "doctrine/cache": "^1.8",
+        "symfony/stopwatch": "*",
+        "symfony/filesystem": "*"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Vairogs\\Utils\\Guzzle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vairogs\\Utils\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "symfony": {
+            "require": "4.1.*"
+        }
+    }
+}

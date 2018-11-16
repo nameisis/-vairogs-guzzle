@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class GuzzlePass implements CompilerPassInterface
 {
-    public const NAME = \VAIROGS.'.'.VairogsBundle::ALIAS.'.'.Definable::GUZZLE;
+    public const NAME = VairogsBundle::FULL_ALIAS.'.'.Definable::GUZZLE;
 
     public const MIDDLEWARE_TAG = self::NAME.'.middleware';
     public const CLIENT_TAG = self::NAME.'.client';

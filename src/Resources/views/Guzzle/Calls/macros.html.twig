@@ -34,7 +34,7 @@
     {% if body is not empty %}
         <h4>Content</h4>
 
-        {% set lang = detect_lang(body) %}
+        {% set lang = vairogs_detect_lang(body) %}
 
         <pre><code class="language-{{ lang }}">{{ body|vairogs_pretty_print(lang) }}</code></pre>
     {% endif %}

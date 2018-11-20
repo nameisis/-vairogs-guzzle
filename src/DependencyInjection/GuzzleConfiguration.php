@@ -2,17 +2,16 @@
 
 namespace Vairogs\Utils\Guzzle\DependencyInjection;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use Vairogs\Utils\Core\Util\Iter;
-use Vairogs\Utils\DependencyInjection\Component\Configurable;
-use Vairogs\Utils\DependencyInjection\Component\Definable;
-use Vairogs\Utils\Guzzle\DependencyInjection\Compiler\GuzzlePass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition as SDefinition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Vairogs\Utils\Core\Util\Iter;
+use Vairogs\Utils\DependencyInjection\Component\Configurable;
+use Vairogs\Utils\DependencyInjection\Component\Definable;
+use Vairogs\Utils\Guzzle\DependencyInjection\Compiler\GuzzlePass;
+use Vairogs\Utils\VairogsBundle;
 
 class GuzzleConfiguration implements Configurable
 {
@@ -20,7 +19,7 @@ class GuzzleConfiguration implements Configurable
 
     public function __construct($alias)
     {
-        $this->alias = $alias.'.'.Definable::GUZZLE;
+        $this->alias = $alias.'.'.VairogsBundle::ALIAS.'.'.Definable::GUZZLE;
     }
 
     public function configure(ContainerBuilder $container): void

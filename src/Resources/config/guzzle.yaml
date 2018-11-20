@@ -11,7 +11,7 @@ parameters:
     vairogs.utils.guzzle.redis_cache.class: Doctrine\Common\Cache\PredisCache
     vairogs.utils.guzzle.mock.storage.class: Vairogs\Utils\Guzzle\Cache\MockStorageAdapter
     vairogs.utils.guzzle.middleware.mock.class: Vairogs\Utils\Guzzle\GuzzleHttp\Middleware\MockMiddleware
-    vairogs.utils.guzzle.client.vairogs.utils.class: GuzzleHttp\Client
+    vairogs.utils.guzzle.client.vairogs.class: Vairogs\Utils\Guzzle\GuzzleHttp\Client
 
 services:
     vairogs.utils.guzzle.data_collector.history_bag:
@@ -106,9 +106,7 @@ services:
                 alias: mock
                 priority: -1250
 
-    vairogs.utils.guzzle.client.vairogs.utils:
-        class: '%vairogs.utils.guzzle.client.vairogs.utils.class%'
-        public: true
+    Vairogs\Utils\Guzzle\GuzzleHttp\Client:
         arguments:
             -
                 verify: false
@@ -116,7 +114,3 @@ services:
         tags:
             -
                 name: vairogs.utils.guzzle.client
-
-    vairogs.utils.guzzle.client:
-        alias: vairogs.utils.guzzle.client.vairogs.utils
-        public: true

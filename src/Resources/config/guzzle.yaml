@@ -117,4 +117,3 @@ services:
         tags:
             -
                 name: vairogs.utils.guzzle.client
-                middleware: '!cache'

@@ -9,7 +9,7 @@
 [![Donate](https://img.shields.io/badge/donate-bitcoin-green.svg)](https://coingate.com/pay/k0d3r1s_BTC)
 [![Donate](https://img.shields.io/badge/donate-patreon-green.svg)](https://www.patreon.com/k0d3r1s)
 
-# Real Latvian CMS Utils: Guzzle library
+# Utils: Guzzle library
 
 Vairogs Utils are a set of different helper libraries created for Symfony 4 framework. 
 In order to implement any of additional libraries, it is needed to require each of them seperately.

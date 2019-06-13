@@ -1,6 +1,6 @@
 {
     "name": "vairogs/vairogs-guzzle",
-    "description": "Real Latvian CMS Utils: Guzzle library",
+    "description": "Utils: Guzzle library",
     "license": "MIT",
     "type": "library",
     "keywords": [
